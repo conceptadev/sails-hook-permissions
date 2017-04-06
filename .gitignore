@@ -8,6 +8,7 @@ dist/
 # Logs
 logs
 *.log
+nbproject/
 
 # Runtime data
 pids
