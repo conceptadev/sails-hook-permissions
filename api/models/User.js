@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var _super = require('sails-auth/api/models/User');
+var _super = require('@inspire-platform/sails-hook-auth/dist/api/models/User');
 
 _.merge(exports, _super);
 _.merge(exports, {

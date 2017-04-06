@@ -30,7 +30,7 @@ class Permissions extends Marlinspike {
     this.installModelOwnership()
     this.sails.after(config.afterEvent, () => {
       if (!this.validateDependencies()) {
-        this.sails.log.error('Cannot find sails-auth hook. Did you "npm install sails-auth --save"?')
+        this.sails.log.error('Cannot find @inspire-platform/sails-hook-auth hook. Did you "npm install @inspire-platform/sails-hook-auth --save"?')
         this.sails.log.error('Please see README for installation instructions: https://github.com/conceptainc/sails-hook-permissions')
         return this.sails.lower()
       }

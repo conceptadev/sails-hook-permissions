@@ -1,6 +1,6 @@
 
 var _ = require('lodash');
-var _super = require('sails-auth/api/models/Passport');
+var _super = require('@inspire-platform/sails-hook-auth/dist/api/models/Passport');
 
 _.merge(exports, _super);
 _.merge(exports, {

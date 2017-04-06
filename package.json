@@ -52,11 +52,11 @@
     "waterline-postgresql": "^0.12.0"
   },
   "dependencies": {
+    "@inspire-platform/sails-hook-auth": "^0.0.0",
     "fnv-plus": "^1.2.10",
     "lodash": "^3.10.0",
     "marlinspike": "^1.0",
     "pluralize": "^1.0.1",
-    "sails-auth": "^2.0",
     "sails-generate-entities": "latest",
     "waterline-criteria": "^0.11.1"
   },
