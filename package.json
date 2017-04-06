@@ -1,6 +1,6 @@
 {
-  "name": "sails-permissions",
-  "version": "2.2.0",
+  "name": "@inspire-platform/sails-hook-permissions",
+  "version": "0.0.0",
   "description": "Comprehensive user permissions and entitlements system for sails.js and Waterline. Supports user authentication with passport.js, role-based permissioning, object ownership, and row-level security.",
   "main": "dist/api/hooks/permissions/index.js",
   "scripts": {
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tjwebb/sails-permissions.git"
+    "url": "https://github.com/conceptainc/sails-hook-permissions.git"
   },
   "keywords": [
     "sails",
@@ -30,12 +30,15 @@
     "trail",
     "tracking"
   ],
-  "author": "Travis Webb <me@traviswebb.com>",
+  "author": "Marshall Sorenson <marshall@conceptsol.com>",
+  "contributors": [
+    "Travis Webb <me@traviswebb.com>"
+  ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tjwebb/sails-permissions/issues"
+    "url": "https://github.com/conceptainc/sails-hook-permissions/issues"
   },
-  "homepage": "https://github.com/tjwebb/sails-permissions",
+  "homepage": "https://github.com/conceptainc/sails-hook-permissions",
   "devDependencies": {
     "babel": "^5.8.21",
     "gulp": "^3.9.0",

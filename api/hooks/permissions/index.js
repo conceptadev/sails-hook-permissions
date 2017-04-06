@@ -31,13 +31,13 @@ class Permissions extends Marlinspike {
     this.sails.after(config.afterEvent, () => {
       if (!this.validateDependencies()) {
         this.sails.log.error('Cannot find sails-auth hook. Did you "npm install sails-auth --save"?')
-        this.sails.log.error('Please see README for installation instructions: https://github.com/tjwebb/sails-permissions')
+        this.sails.log.error('Please see README for installation instructions: https://github.com/conceptainc/sails-hook-permissions')
         return this.sails.lower()
       }
 
       if (!this.validatePolicyConfig()) {
         this.sails.log.warn('One or more required policies are missing.')
-        this.sails.log.warn('Please see README for installation instructions: https://github.com/tjwebb/sails-permissions')
+        this.sails.log.warn('Please see README for installation instructions: https://github.com/conceptainc/sails-hook-permissions')
       }
 
     })
@@ -110,7 +110,7 @@ class Permissions extends Marlinspike {
         return sails.models.user.findOne({ email: this.sails.config.permissions.adminEmail })
       })
       .then(user => {
-        this.sails.log('sails-permissions: created admin user:', user)
+        this.sails.log('sails-hook-permissions: created admin user:', user)
         user.createdBy = user.id
         user.owner = user.id
         return user.save()
