@@ -3,10 +3,18 @@
  *
  * @public
  */
-exports.create = function () {
-  return Promise.all([
-    sails.models.role.findOrCreate({ name: 'admin' }, { name: 'admin' }),
-    sails.models.role.findOrCreate({ name: 'registered' }, { name: 'registered' }),
-    sails.models.role.findOrCreate({ name: 'public' }, { name: 'public' })
-  ]);
+
+var _ = require('lodash');
+
+exports.create = function (config) {
+
+  var promises = [];
+
+  _.forEach(config.defaultRoles, function(roleCreate, roleName){
+    if (true === roleCreate) {
+      promises.push(sails.models.role.findOrCreate({ name: roleName }, { name: roleName }));
+    }
+  });
+
+  return Promise.all(promises);
 };

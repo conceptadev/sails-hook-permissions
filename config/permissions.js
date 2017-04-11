@@ -5,6 +5,14 @@ module.exports.permissions = {
   adminUsername: process.env.ADMIN_USERNAME || 'admin',
   adminPassword: process.env.ADMIN_PASSWORD || 'admin1234',
 
+  defaultRoles: {
+    admin: true,
+    registered: true,
+    public: true
+  },
+
+  defaultRole: 'registered',
+
   afterEvents: [
     'hook:auth:initialized'
   ]

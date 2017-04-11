@@ -38,14 +38,18 @@ var modelRestrictions = {
  * Create default Role permissions
  */
 exports.create = function (roles, models, admin, config) {
-  return Promise.all([
-    grantAdminPermissions(roles, models, admin, config),
-    grantRegisteredPermissions(roles, models, admin, config)
-  ])
-  .then(function (permissions) {
-    //sails.log.verbose('created', permissions.length, 'permissions');
-    return permissions;
-  });
+
+  var promises = [grantAdminPermissions(roles, models, admin, config)];
+
+  if (-1 < _.findIndex(roles, {name: 'registered'})) {
+    promises.push(grantRegisteredPermissions(roles, models, admin, config));
+  }
+  
+  return Promise.all(promises)
+    .then(function (permissions) {
+      //sails.log.verbose('created', permissions.length, 'permissions');
+      return permissions;
+    });
 };
 
 function grantAdminPermissions (roles, models, admin, config) {

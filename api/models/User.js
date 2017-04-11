@@ -33,24 +33,33 @@ _.merge(exports, {
     },
     function attachDefaultRole (user, next) {
       sails.log('User.afterCreate.attachDefaultRole', user);
-      User.findOne(user.id)
-        .populate('roles')
-        .then(function (_user) {
-          user = _user;
-          return Role.findOne({ name: 'registered' });
-        })
-        .then(function (role) {
-          user.roles.add(role.id);
-          return user.save();
-        })
-        .then(function (updatedUser) {
-          sails.log.silly('role "registered" attached to user', user.username);
-          next();
-        })
-        .catch(function (e) {
-          sails.log.error(e);
-          next(e);
-        })
+
+      if (sails.config.permissions.defaultRole) {
+
+        var defaultRole = sails.config.permissions.defaultRole;
+
+        User.findOne(user.id)
+          .populate('roles')
+          .then(function (_user) {
+            user = _user;
+            return Role.findOne({ name: defaultRole });
+          })
+          .then(function (role) {
+            user.roles.add(role.id);
+            return user.save();
+          })
+          .then(function (updatedUser) {
+            sails.log.silly('role "' + defaultRole + '" attached to user', user.username);
+            next();
+          })
+          .catch(function (e) {
+            sails.log.error(e);
+            next(e);
+          })
+
+      } else {
+        next();
+      }
     }
   ]
 });
