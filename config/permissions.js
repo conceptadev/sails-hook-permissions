@@ -13,7 +13,5 @@ module.exports.permissions = {
 
   defaultRole: 'registered',
 
-  afterEvents: [
-    'hook:auth:initialized'
-  ]
+  afterEvent: 'hook:auth:loaded'
 };

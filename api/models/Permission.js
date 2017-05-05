@@ -16,6 +16,11 @@ module.exports = {
 
   attributes: {
 
+    id: {
+      type: 'number',
+      autoIncrement: true
+    },
+
     /**
      * The Model that this Permission applies to.
      */
@@ -26,8 +31,7 @@ module.exports = {
 
     action: {
       type: 'string',
-      index: true,
-      notNull: true,
+      required: true,
       /**
        * TODO remove enum and support permissions based on all controller
        * actions, including custom ones
@@ -47,8 +51,17 @@ module.exports = {
         'owner',
         'user'
       ],
-      defaultsTo: 'role',
-      index: true
+      defaultsTo: 'role'
+    },
+
+    createdAt: {
+      type: 'string',
+      autoCreatedAt: true
+    },
+
+    updatedAt: {
+      type: 'string',
+      autoUpdatedAt: true
     },
 
     /**
@@ -78,6 +91,7 @@ module.exports = {
       collection: 'Criteria',
       via: 'permission'
     }
+
   },
 
   afterValidate: [

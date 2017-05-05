@@ -6,14 +6,9 @@
 */
 
 module.exports = {
-  autoPK: false,
-  autoUpdatedAt: false,
-  autoCreatedAt: false,
-
   attributes: {
     request: {
-      model: 'RequestLog',
-      primaryKey: true
+      model: 'RequestLog'
     }
   }
 };

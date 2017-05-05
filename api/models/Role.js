@@ -9,24 +9,33 @@
  */
 module.exports = {
   autoCreatedBy: false,
-
   description: 'Confers `Permission` to `User`',
-
   attributes: {
+    id: {
+      type: 'number',
+      autoIncrement: true
+    },
     name: {
       type: 'string',
-      index: true,
-      notNull: true,
-      unique: true
+      required: true,
+      unique: true,
+      minLength: 1
+    },
+    active: {
+      type: 'boolean',
+      defaultsTo: true
+    },
+    createdAt: {
+      type: 'string',
+      autoCreatedAt: true
+    },
+    updatedAt: {
+      type: 'string',
+      autoUpdatedAt: true
     },
     users: {
       collection: 'User',
       via: 'roles'
-    },
-    active: {
-      type: 'boolean',
-      defaultsTo: true,
-      index: true
     },
     permissions: {
       collection: 'Permission',

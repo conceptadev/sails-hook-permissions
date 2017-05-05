@@ -8,27 +8,21 @@ var permissionPolicies = [
 ]
 import path from 'path'
 import _ from 'lodash'
-import Marlinspike from 'marlinspike'
 
-class Permissions extends Marlinspike {
+class Permissions {
+
   constructor (sails) {
-    super(sails, module)
+    this.sails = sails;
   }
 
   configure () {
     if (!_.isObject(sails.config.permissions)) sails.config.permissions = { }
-
-    /**
-     * Local cache of Model name -> id mappings to avoid excessive database lookups.
-     */
-    this.sails.config.blueprints.populate = false
   }
 
   initialize (next) {
     let config = this.sails.config.permissions
 
-    this.installModelOwnership()
-    this.sails.after(config.afterEvent, () => {
+    this.sails.after('hook:auth:loaded', () => {
       if (!this.validateDependencies()) {
         this.sails.log.error('Cannot find @inspire-platform/sails-hook-auth hook. Did you "npm install @inspire-platform/sails-hook-auth --save"?')
         this.sails.log.error('Please see README for installation instructions: https://github.com/conceptainc/sails-hook-permissions')
@@ -68,26 +62,6 @@ class Permissions extends Marlinspike {
     ])
   }
 
-  installModelOwnership () {
-    var models = this.sails.models
-    if (this.sails.config.models.autoCreatedBy === false) return
-
-    _.each(models, model => {
-      if (model.autoCreatedBy === false) return
-
-      _.defaults(model.attributes, {
-        createdBy: {
-          model: 'User',
-          index: true
-        },
-        owner: {
-          model: 'User',
-          index: true
-        }
-      })
-    })
-  }
-
   /**
   * Install the application. Sets up default Roles, Users, Models, and
   * Permissions, and creates an admin user.
@@ -111,9 +85,15 @@ class Permissions extends Marlinspike {
       })
       .then(user => {
         this.sails.log('sails-hook-permissions: created admin user:', user)
-        user.createdBy = user.id
-        user.owner = user.id
-        return user.save()
+        return User.update(
+          {
+            id: user.id
+          }, {
+            createdBy: user.id,
+            owner: user.id
+          }).meta({
+          fetch: true
+        });
       })
       .then(admin => {
         return require(path.resolve(fixturesPath, 'permission')).create(this.roles, this.models, admin, this.sails.config.permissions);
@@ -128,4 +108,26 @@ class Permissions extends Marlinspike {
   }
 }
 
-export default Marlinspike.createSailsHook(Permissions)
+
+/**
+ * This is the hook.
+ *
+ * @param sails
+ * @returns {{configure: configure, initialize: initialize}}
+ */
+module.exports = function (sails) {
+
+  let permissions = new Permissions(sails);
+
+  return {
+
+    configure: function() {
+      return permissions.configure();
+    },
+
+    initialize: function(next) {
+      sails.after('hook:auth:loaded', () => permissions.initialize(next))
+    }
+
+  };
+};
