@@ -1,6 +1,6 @@
 {
   "name": "@inspire-platform/sails-hook-permissions",
-  "version": "1.0.3",
+  "version": "2.0.0-bleeding",
   "description": "Comprehensive user permissions and entitlements system for sails.js and Waterline. Supports user authentication with passport.js, role-based permissioning, object ownership, and row-level security.",
   "main": "dist/api/hooks/permissions/index.js",
   "scripts": {
@@ -53,10 +53,9 @@
     "waterline-postgresql": "^0.12.0"
   },
   "dependencies": {
-    "@inspire-platform/sails-hook-auth": "^1.0.1",
+    "@inspire-platform/sails-hook-auth": "^2.0.0-0",
     "fnv-plus": "^1.2.10",
     "lodash": "^3.10.0",
-    "marlinspike": "^1.0",
     "pluralize": "^1.0.1",
     "sails-generate-entities": "latest",
     "waterline-criteria": "^0.11.1"
@@ -64,9 +63,5 @@
   "engines": {
     "node": ">= 0.10",
     "npm": ">= 2.3"
-  },
-  "sails": {
-    "isHook": true,
-    "hookName": "permissions"
   }
 }

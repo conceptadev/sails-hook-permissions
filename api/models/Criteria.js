@@ -10,12 +10,29 @@
  */
 module.exports = {
   autoCreatedBy: false,
-
   description: 'Specifies more granular limits on a permission',
-
   attributes: {
-    where: 'json',
-    blacklist: 'array',
+    id: {
+      type: 'number',
+      autoIncrement: true
+    },
+    where: {
+      type: 'json',
+      columnType: 'json'
+    },
+    blacklist: {
+      type: 'json',
+      columnType: 'json'
+    },
+    createdAt: {
+      type: 'string',
+      autoCreatedAt: true
+    },
+    updatedAt: {
+      type: 'string',
+      autoUpdatedAt: true
+    },
+
     permission: {
         model: 'Permission'
     }

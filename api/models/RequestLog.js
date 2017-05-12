@@ -6,14 +6,10 @@
 */
 
 module.exports = {
-  autoPK: false,
-  autoCreatedBy: false,
-  autoUpdatedAt: false,
-
   attributes: {
     id: {
       type: 'string',
-      primaryKey: true
+      required: true
     },
     ipAddress: {
       type: 'string'

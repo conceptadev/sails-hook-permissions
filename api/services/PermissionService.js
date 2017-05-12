@@ -45,16 +45,26 @@ module.exports = {
   findTargetObjects: function(req) {
 
 
-    // handle add/remove routes that have :parentid as the primary key field
-    var originalId;
+    // handle add/remove routes that use :parentid and :childid as the primary key fields
+    var parentId;
+    var childId;
+
     if (req.params.parentid) {
-      originalId = req.params.id;
+      parentId = req.params.parentid;
       req.params.id = req.params.parentid;
+      delete req.params.parentid;
+    }
+
+    if (req.params.childid) {
+      childId = req.params.childid;
+      delete req.params.childid;
     }
 
     return new Promise(function(resolve, reject) {
-        sails.hooks.blueprints.middleware.find(req, {
+        var findAction = require('sails/lib/hooks/blueprints/actions/find')
+        findAction(req, {
           ok: resolve,
+          badRequest: reject,
           serverError: reject,
           // this isn't perfect, since it returns a 500 error instead of a 404 error
           // but it is better than crashing the app when a record doesn't exist
@@ -62,8 +72,12 @@ module.exports = {
         });
       })
       .then(function(result) {
-        if (originalId !== undefined) {
-          req.params.id = originalId;
+        if (parentId !== undefined) {
+          delete req.params.id;
+          req.params.parentid = parentId;
+        }
+        if (childId !== undefined) {
+          req.params.childid = childId;
         }
         return result;
       });
@@ -90,10 +104,14 @@ module.exports = {
           model: options.model.id,
           action: action,
           or: [
-            { role: _.pluck(user.roles, 'id') },
             { user: user.id }
           ]
         };
+
+        // add roles
+        _.forEach(user.roles, function(role){
+          permissionCriteria.or.push({role: role.id});
+        });
         
         return Permission.find(permissionCriteria).populate('criteria')
       });
@@ -177,7 +195,7 @@ module.exports = {
    * otherwise.
    */
   hasOwnershipPolicy: function(model) {
-    return model.autoCreatedBy;
+    return (model.autoCreatedBy === true);
   },
 
   /**
@@ -244,7 +262,7 @@ module.exports = {
     });
 
     ok = ok.then(function(users) {
-      return Role.create(options);
+      return Role.create(options).meta({fetch: true});
     });
 
     return ok;
@@ -292,7 +310,7 @@ module.exports = {
     }));
 
     ok = ok.then(function() {
-      return Permission.create(permissions);
+      return Permission.create(permissions).meta({fetch: true});
     });
 
     return ok;

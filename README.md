@@ -6,7 +6,7 @@ Comprehensive sails.js user permissions and entitlements system. Supports user a
 
 ## Install
 ```sh
-$ npm install @inspire-platform/sails-hook-permissions @inspire-platform/sails-hook-auth --save
+$ npm install @inspire-platform/sails-hook-permissions --save
 ```
 
 ## Quickstart
@@ -26,6 +26,8 @@ $ npm install @inspire-platform/sails-hook-permissions @inspire-platform/sails-h
 ```
 
 ### 2. run generator
+
+> WARNING! The generator is not currently up to date with the 2.x.x releases.
 
 ```sh
 $ sails generate permissions-api
