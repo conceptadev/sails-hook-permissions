@@ -115,9 +115,15 @@ function grantRegisteredPermissions (roles, models, admin, config) {
     });
   }));
 
+  var allPermissions = _.reduce([ ...basePermissions, ...grantPermissions ], function(acc, value){
+    if (undefined === _.find(acc, value)) {
+      acc.push(value);
+    }
+    return acc;
+  }, []);
 
   return Promise.all(
-    [ ...basePermissions, ...grantPermissions ].map(permission => {
+    allPermissions.map(permission => {
       return sails.models.permission.findOrCreate(permission, permission);
     })
   );
