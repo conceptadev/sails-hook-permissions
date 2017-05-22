@@ -33,7 +33,9 @@ $ npm install @inspire-platform/sails-hook-permissions --save
 $ sails generate permissions-api
 ```
 
-### 3. Set environment variables
+#### 3. Manual configuration
+
+#### Env vars
 
 | variable | description | default |
 |:---|:---|:---|
@@ -41,34 +43,41 @@ $ sails generate permissions-api
 | `ADMIN_EMAIL` | admin user email address | `admin@example.com` |
 | `ADMIN_PASSWORD` | admin user password | `admin1234` |
 
-##### e.g in config/local.js (file is in .gitignore)
+
+#### config/permissions.js (or config/local.js)
+```js
+...
+permissions: {
+  adminUser: {
+    username: 'admin',
+    email: 'admin@example.com',
+    password: 'admin1234'
+    // add custom fields here if your model requires them
+  }
+},
+...
 ```
-sails.config.permissions.adminUsername = 'admin'
-sails.config.permissions.adminEmail = 'admin@example.com'
-sails.config.permissions.adminPassword = 'admin1234'
-```
-#### 4. update configs
 
 #### config/policies.js
 ```js
-  '*': [
-    'basicAuth',
-    'passport',
-    'sessionAuth',
-    'ModelPolicy',
-    'AuditPolicy',
-    'OwnerPolicy',
-    'PermissionPolicy',
-    'RolePolicy',
-    'CriteriaPolicy'
-  ],
+'*': [
+  'basicAuth',
+  'passport',
+  'sessionAuth',
+  'ModelPolicy',
+  'AuditPolicy',
+  'OwnerPolicy',
+  'PermissionPolicy',
+  'RolePolicy',
+  'CriteriaPolicy'
+],
 
-  AuthController: {
-    '*': [ 'passport' ]
-  }
+AuthController: {
+  '*': [ 'passport' ]
+}
 ```
 
-#### 5. Login
+#### 4. Login
 You can now login using the aforementioned default login data or the admin settings you specified using the `/auth/local` endpoint.
 ```json
 {

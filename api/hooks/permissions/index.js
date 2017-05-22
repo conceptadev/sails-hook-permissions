@@ -81,7 +81,7 @@ class Permissions {
         return require(path.resolve(fixturesPath, 'user')).create(this.roles, userModel)
       })
       .then(() => {
-        return sails.models.user.findOne({ email: this.sails.config.permissions.adminEmail })
+        return sails.models.user.findOne({ email: this.sails.config.permissions.adminUser.email })
       })
       .then(user => {
         this.sails.log('sails-hook-permissions: created admin user:', user)

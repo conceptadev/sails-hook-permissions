@@ -1,9 +1,11 @@
 module.exports.permissions = {
   name: 'permissions',
 
-  adminEmail: process.env.ADMIN_EMAIL || 'admin@example.com',
-  adminUsername: process.env.ADMIN_USERNAME || 'admin',
-  adminPassword: process.env.ADMIN_PASSWORD || 'admin1234',
+  adminUser: {
+    username: process.env.ADMIN_USERNAME || 'admin',
+    email: process.env.ADMIN_EMAIL || 'admin@example.com',
+    password: process.env.ADMIN_PASSWORD || 'admin1234'
+  },
 
   defaultRoles: {
     admin: true,
