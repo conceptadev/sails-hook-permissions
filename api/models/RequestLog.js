@@ -8,8 +8,8 @@
 module.exports = {
   attributes: {
     id: {
-      type: 'string',
-      required: true
+      type: 'number',
+      autoIncrement: true
     },
     ipAddress: {
       type: 'string'
