@@ -19,7 +19,7 @@ module.exports = {
     },
     url: {
       type: 'string',
-      url: true
+      isURL: true
     },
     body: {
       type: 'json'

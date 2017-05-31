@@ -36,7 +36,7 @@ module.exports = {
        * TODO remove enum and support permissions based on all controller
        * actions, including custom ones
        */
-      enum: [
+      isIn: [
         'create',
         'read',
         'update',
@@ -46,7 +46,7 @@ module.exports = {
 
     relation: {
       type: 'string',
-      enum: [
+      isIn: [
         'role',
         'owner',
         'user'
