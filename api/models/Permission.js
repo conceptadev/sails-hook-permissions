@@ -55,12 +55,12 @@ module.exports = {
     },
 
     createdAt: {
-      type: 'string',
+      type: 'number',
       autoCreatedAt: true
     },
 
     updatedAt: {
-      type: 'string',
+      type: 'number',
       autoUpdatedAt: true
     },
 

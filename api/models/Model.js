@@ -31,6 +31,14 @@ module.exports = {
     permissions: {
       collection: 'Permission',
       via: 'model'
+    },
+    createdAt: {
+      type: 'number',
+      autoCreatedAt: true
+    },
+    updatedAt: {
+      type: 'number',
+      autoUpdatedAt: true
     }
   },
   customToJSON: function () {
