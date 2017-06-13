@@ -24,15 +24,6 @@ module.exports = {
       type: 'json',
       columnType: 'json'
     },
-    createdAt: {
-      type: 'number',
-      autoCreatedAt: true
-    },
-    updatedAt: {
-      type: 'number',
-      autoUpdatedAt: true
-    },
-
     permission: {
         model: 'Permission'
     }

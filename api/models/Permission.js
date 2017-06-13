@@ -54,16 +54,6 @@ module.exports = {
       defaultsTo: 'role'
     },
 
-    createdAt: {
-      type: 'number',
-      autoCreatedAt: true
-    },
-
-    updatedAt: {
-      type: 'number',
-      autoUpdatedAt: true
-    },
-
     /**
      * The Role to which this Permission grants create, read, update, and/or
      * delete privileges.

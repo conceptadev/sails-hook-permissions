@@ -25,14 +25,6 @@ module.exports = {
       type: 'boolean',
       defaultsTo: true
     },
-    createdAt: {
-      type: 'number',
-      autoCreatedAt: true
-    },
-    updatedAt: {
-      type: 'number',
-      autoUpdatedAt: true
-    },
     users: {
       collection: 'User',
       via: 'roles'
