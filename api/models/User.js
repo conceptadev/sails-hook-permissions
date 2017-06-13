@@ -6,8 +6,7 @@ _.merge(exports, {
   attributes: {
     roles: {
       collection: 'Role',
-      via: 'users',
-      dominant: true
+      via: 'users'
     },
     permissions: {
       collection: "Permission",
