@@ -37,9 +37,14 @@ class Permissions {
     })
 
     this.sails.after('hook:orm:loaded', () => {
-      sails.models.model.count()
-        .then(count => {
-          if (count === _.keys(this.sails.models).length) return next()
+
+      sails.models.model.find()
+        .then(models => {
+
+          if (models.length === _.keys(this.sails.models).length) {
+            this.sails.hooks.permissions._modelCache = _.indexBy(this.sails.models, 'identity')
+            return next()
+          }
 
           return this.initializeFixtures()
             .then(() => {
