@@ -19,6 +19,7 @@ _.merge(exports, {
       'id',
       'username',
       'email',
+      'lastLogin',
       'roles',
       'permissions',
       'createdAt',
