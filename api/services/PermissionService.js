@@ -45,6 +45,7 @@ module.exports = {
    */
   findTargetObjects: function(req) {
 
+    var action = PermissionService.getMethod(req.method);
 
     // handle add/remove routes that use :parentid and :childid as the primary key fields
     var parentId;
@@ -62,7 +63,18 @@ module.exports = {
     }
 
     return new Promise(function(resolve, reject) {
-        var findAction = require('sails/lib/hooks/blueprints/actions/find')
+
+        var findAction;
+
+        switch (action) {
+          case 'read':
+            findAction = require('sails/lib/hooks/blueprints/actions/find')
+            break;
+          default:
+            findAction = require('sails/lib/hooks/blueprints/actions/findOne')
+            break;
+        }
+
         findAction(req, {
           ok: resolve,
           badRequest: reject,
