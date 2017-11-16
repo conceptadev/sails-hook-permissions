@@ -74,6 +74,15 @@ module.exports = {
     },
 
     /**
+     * A list of object filters. Object ids are compiled into a where clause and forwarded to
+     * the criteria policy.
+     */
+    objectFilters: {
+      collection: 'ObjectFilter',
+      via: 'permission'
+    },
+
+    /**
      * A list of criteria.  If any of the criteria match the request, the action is allowed.
      * If no criteria are specified, it is ignored altogether.
      */
