@@ -35,15 +35,9 @@ module.exports = function(req, res, next) {
     // get all of the where clauses and blacklists into one flat array
     // if a permission has no criteria then it is always true
     var criteria = _.compact(_.flatten(
-      _.map(
-        _.pluck(permissions, 'criteria'),
-        function(c) {
-          if (c.length == 0) {
-            return [{where: {}}];
-          }
-          return c;
-        }
-      )
+      _.map(permissions, (perm) => {
+        return PermissionService.genPermissionCriteria(perm);
+      })
     ));
 
     if (criteria.length) {

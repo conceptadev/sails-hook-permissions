@@ -126,8 +126,53 @@ module.exports = {
           permissionCriteria.or.push({role: role.id});
         });
         
-        return Permission.find(permissionCriteria).populate('criteria')
+        return Permission.find(permissionCriteria).populate('criteria').populate('objectFilters')
       });
+  },
+
+  /**
+   * Generate final permissions criteria from permissions object.
+   *
+   * @param perm
+   * @returns {Array}
+   */
+  genPermissionCriteria: function(perm) {
+
+    var finalCriteria = [];
+
+    // have object filters?
+    if (perm.objectFilters && perm.objectFilters.length > 0) {
+      // yes, build where criteria for every id
+      let objFilterCriteria = perm.objectFilters.map((o) => {
+        if (true === o.allow) {
+          return {where: {id: o.objectId}};
+        } else {
+          return {where: {id: {'!=': o.objectId}}};
+        }
+      });
+      // concat
+      finalCriteria = finalCriteria.concat(objFilterCriteria);
+    }
+
+    // have criteria?
+    if (perm.criteria && perm.criteria.length >= 1) {
+      // yes, append all
+      finalCriteria = finalCriteria.concat(perm.criteria);
+    }
+
+    // If a permission has no criteria then it passes for all cases
+    // (like the admin role)
+    if (finalCriteria.length < 1) {
+      finalCriteria = finalCriteria.concat([{where: {}}]);
+    }
+
+    if (perm.relation === 'owner') {
+      perm.criteria.forEach(function (criteria) {
+        criteria.owner = true;
+      });
+    }
+
+    return finalCriteria;
   },
 
   /**
@@ -153,19 +198,8 @@ module.exports = {
 
     var criteria = permissions.reduce(function (memo, perm) {
       if (perm) {
-        if (!perm.criteria || perm.criteria.length==0) {
-          // If a permission has no criteria then it passes for all cases
-          // (like the admin role)
-          memo = memo.concat([{where:{}}]);
-        }
-        else {
-            memo = memo.concat(perm.criteria);
-        }
-        if (perm.relation === 'owner') {
-            perm.criteria.forEach(function (criteria) {
-                criteria.owner = true;
-            });
-        }
+        var permCriteria = PermissionService.genPermissionCriteria(perm);
+        memo = memo.concat(permCriteria);
         return memo;
       }
     }, []);
@@ -471,7 +505,7 @@ module.exports = {
             action: action,
             relation: 'user',
             user: user
-          }).populate('criteria');
+          }).populate('criteria').populate('objectFilters');
         }).then(function(permission) {
           if (permission.length > 0 && PermissionService.hasPassingCriteria(obj, permission, body)) {
             resolve(true);
