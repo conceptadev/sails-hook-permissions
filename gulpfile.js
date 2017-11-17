@@ -10,8 +10,12 @@ gulp.task("default", function () {
   gulp.src("config/**")
     .pipe(babel())
     .pipe(gulp.dest("dist/config"));
+
+  gulp.src("lib/**")
+    .pipe(babel())
+    .pipe(gulp.dest("dist/lib"));
 });
 
 gulp.task('watch', function () {
-   gulp.watch(['api/**', 'config/**'], ['default']);
+   gulp.watch(['api/**', 'config/**', 'lib/**'], ['default']);
 });
