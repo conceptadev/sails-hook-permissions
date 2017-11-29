@@ -144,11 +144,7 @@ module.exports = {
     if (perm.objectFilters && perm.objectFilters.length > 0) {
       // yes, build where criteria for every id
       let objFilterCriteria = perm.objectFilters.map((o) => {
-        if (true === o.allow) {
-          return {where: {id: o.objectId}};
-        } else {
-          return {where: {id: {'!=': o.objectId}}};
-        }
+        return {where: {id: o.objectId}};
       });
       // concat
       finalCriteria = finalCriteria.concat(objFilterCriteria);

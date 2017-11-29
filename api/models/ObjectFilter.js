@@ -15,9 +15,6 @@ module.exports = {
       type: 'number',
       autoIncrement: true
     },
-    allow: {
-      type: 'boolean'
-    },
     objectId: {
       type: 'number'
     },
