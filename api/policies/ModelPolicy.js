@@ -16,6 +16,7 @@ module.exports = function ModelPolicy (req, res, next) {
   req.options.modelIdentity = parseModel(req);
 
   if (_.isEmpty(req.options.modelIdentity)) {
+    req.options.unknownModel = true;
     return next();
   }
 
