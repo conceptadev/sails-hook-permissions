@@ -3,6 +3,9 @@
  * The comment below, and the name of this file/function is confusing to me
  * Ensure that the 'owner' property of an Object is set upon creation.
  */
+
+let _ = require('lodash');
+
 module.exports = function OwnerPolicy (req, res, next) {
   //sails.log('OwnerPolicy()');
   if (!req.user || !req.user.id) {
@@ -16,7 +19,10 @@ module.exports = function OwnerPolicy (req, res, next) {
   sails.log.verbose('OwnerPolicy req.body', req.body);
   */
 
-  if (req.options.modelDefinition.autoCreatedBy !== true) {
+  if (
+    false === _.has(req.options, 'modelDefinition.autoCreatedBy') ||
+    true !== req.options.modelDefinition.autoCreatedBy
+  ) {
     // sails.log.verbose('OwnerPolicy hasOwnershipPolicy: false');
     return next();
   }

@@ -238,7 +238,10 @@ module.exports = {
    * otherwise.
    */
   hasOwnershipPolicy: function(model) {
-    return (model.autoCreatedBy === true);
+    return (
+      true === 'autoCreatedBy' in model &&
+      true === model.autoCreatedBy
+    );
   },
 
   /**
