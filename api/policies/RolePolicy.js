@@ -11,50 +11,70 @@
 import _ from 'lodash'
 
 module.exports = function(req, res, next) {
-  var permissions = req.permissions;
-  var relations = _.groupBy(permissions, 'relation');
-  var action = PermissionService.getMethod(req.method);
 
-  // continue if there exist role Permissions which grant the asserted privilege
-  if (!_.isEmpty(relations.role)) {
-    return next();
-  }
+  // can't apply policy to unknown model
   if (req.options.unknownModel) {
     return next();
   }
 
-  /*
-   * This block allows us to filter reads by the owner attribute, rather than failing an entire request
-   * if some of the results are not owned by the user.
-   * We don't want to take this same course of action for an update or delete action, we would prefer to fail the entire request.
-   * There is no notion of 'create' for an owner permission, so it is not relevant here.
-   */
-  if (!_.contains(['update', 'delete'], action) && req.options.modelDefinition.attributes.owner) {
-    // Some parsing must happen on the query down the line,
-    // as req.query has no impact on the results from PermissionService.findTargetObjects.
-    // I had to look at the actionUtil parseCriteria method to see where to augment the criteria
+  var action = PermissionService.getMethod(req.method);
+  var relations = _.groupBy(req.permissions, 'relation');
+
+  // do any role or user permissions exist which grant the asserted privilege?
+  if (
+    false === _.isEmpty(relations.role) ||
+    false === _.isEmpty(relations.user)
+  ) {
+    // yes, continue
+    return next();
+  }
+
+  //
+  // If we made it this far, we are dealing with object owner permissions
+  //
+
+  if (true === _.has(req.options, 'modelDefinition.attributes.owner')) {
+
+    // are we creating?
+    if ('create' === action) {
+      // owner permission never allows create
+      return res.send(403, {
+        error: 'Cannot perform action [create] without role or user based permission'
+      });
+    }
+
+    // are we mutating?
+    if (true === _.contains(['update', 'delete'], action)) {
+      // yes, find objects that would be modified/deleted.
+      return PermissionService.findTargetObjects(req)
+        .then(function (objects) {
+          if (PermissionService.hasForeignObjects(objects, req.user)) {
+            return res.send(403, {
+              error: 'Cannot perform action [' + action + ']. Authenticated user does not own one or more target objects.'
+            });
+          } else {
+            return next();
+          }
+        }).catch(next);
+    }
+
+    // This block allows us to filter reads by the owner attribute, rather than failing an entire request
+    // if some of the results are not owned by the user.
     req.params.all().where = req.params.all().where || {};
     req.params.all().where.owner = req.user.id;
     req.query.owner = req.user.id;
     _.isObject(req.body) && (req.body.owner = req.user.id);
+
+    // not mutating
+    return next();
+
+  } else {
+
+    // no owner attribute on model!
+    return res.send(403, {
+      error: `Cannot apply owner permission policy to model ${req.method} due to missing "owner" attribute.`
+    });
+
   }
 
-  PermissionService.findTargetObjects(req)
-    .then(function(objects) {
-        // PermissionService.isAllowedToPerformAction checks if the user has 'user' based permissions (vs role or owner based permissions)
-      return PermissionService.isAllowedToPerformAction(objects, req.user, action, ModelService.getTargetModelName(req), req.body)
-        .then(function(hasUserPermissions) {
-          if (hasUserPermissions) {
-            return next();
-          }
-          if (PermissionService.hasForeignObjects(objects, req.user)) {
-            return res.send(403, {
-              error: 'Cannot perform action [' + action + '] on foreign object'
-            });
-          }
-          next();
-        });
-
-    })
-    .catch(next);
 };
