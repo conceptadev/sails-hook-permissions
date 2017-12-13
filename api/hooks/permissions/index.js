@@ -42,7 +42,7 @@ class Permissions {
         .then(models => {
 
           if (models.length === _.keys(this.sails.models).length) {
-            this.sails.hooks.permissions._modelCache = _.indexBy(this.sails.models, 'identity')
+            this.sails.hooks.permissions._modelCache = _.indexBy(models, 'identity')
             return next()
           }
 
