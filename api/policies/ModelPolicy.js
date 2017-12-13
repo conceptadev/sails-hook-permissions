@@ -23,7 +23,7 @@ module.exports = function ModelPolicy (req, res, next) {
   req.options.modelDefinition = sails.models[req.options.modelIdentity];
   req.model = modelCache[req.options.modelIdentity];
 
-  if (_.isObject(req.model) && !_.isNull(req.model.id)) {
+  if (_.isObject(req.model) && !_.isNull(req.model.id) && req.model.id !== undefined) {
     return next();
   }
 
