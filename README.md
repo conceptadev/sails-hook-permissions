@@ -4,14 +4,22 @@
 
 Comprehensive sails.js user permissions and entitlements system. Supports user authentication with passport.js, role-based permissioning, object ownership, and row-level security.
 
+## Contents
+
+* [Install](#install)
+* [Quickstart](#quickstart)
+* [Concepts](docs/Concepts.md)
+* [Configuration](docs/Configuration.md)
+* Managing Permissions
+  * [Using REST](docs/Managing-REST.md)
+  * [Using Library](docs/Managing-Library.md)
+
 ## Install
 ```sh
 $ npm install @inspire-platform/sails-hook-permissions --save
 ```
 
 ## Quickstart
-
-**Note:** Complete documentation available in the sails-permissions wiki: https://github.com/langateam/sails-permissions/wiki
 
 ### 1. configure sailsrc
 
@@ -33,7 +41,7 @@ $ npm install @inspire-platform/sails-hook-permissions --save
 $ sails generate permissions-api
 ```
 
-#### 3. Manual configuration
+### 3. Manual configuration
 
 #### Env vars
 
