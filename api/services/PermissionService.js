@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var helpers = require('../../lib/helpers');
 
 var methodMap = {
   POST: 'create',
@@ -105,29 +106,16 @@ module.exports = {
    * @param options.user
    */
   findModelPermissions: function(options) {
-    var action = PermissionService.getMethod(options.method);
-
     //console.log('findModelPermissions options', options)
     //console.log('findModelPermissions action', action)
 
-    return User.findOne(options.user.id)
-      .populate('roles')
-      .then(function(user) {
-        var permissionCriteria = {
-          model: options.model.id,
-          action: action,
-          or: [
-            { user: user.id }
-          ]
-        };
+    let helperOptions = {
+      model: options.model,
+      action: PermissionService.getMethod(options.method),
+      populate: ['criteria', 'objectFilters']
+    };
 
-        // add roles
-        _.forEach(user.roles, function(role){
-          permissionCriteria.or.push({role: role.id});
-        });
-        
-        return Permission.find(permissionCriteria).populate('criteria').populate('objectFilters')
-      });
+    return helpers.findUserPermissions(options.user, helperOptions);
   },
 
   /**
