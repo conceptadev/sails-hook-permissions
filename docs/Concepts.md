@@ -58,9 +58,10 @@ Advanced Filtering:
 > - Permissions are aggregated, not merged.
 > - Permissions are applied using short-circuit logic upon first successful grant.
 > - More lenient access always supersedes stricter access.
-> - If one `Permission` has both Criteria and Object Filters, they are applied using `OR` logic.
-    This means a `Criteria` may inadvertently circumvent the `Object Filters` white list if the `where`
-    criteria matches object which are NOT in the white list.
+> - If one `Permission` has both `Criteria` and `Object Filters`, each is grouped using `OR` logic,
+    then each group is placed in a super group using `AND` logic.
+    This means that in order to grant access at least one `Criteria` must match __AND__ at least one
+    `Object Filter` must match.
 
 ### Criteria
 

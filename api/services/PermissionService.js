@@ -126,37 +126,85 @@ module.exports = {
    */
   genPermissionCriteria: function(perm) {
 
-    var finalCriteria = [];
-
-    // have object filters?
-    if (perm.objectFilters && perm.objectFilters.length > 0) {
-      // yes, build where criteria for every id
-      let objFilterCriteria = perm.objectFilters.map((o) => {
-        return {where: {id: o.objectId}};
-      });
-      // concat
-      finalCriteria = finalCriteria.concat(objFilterCriteria);
-    }
+    var permCriteria = [];
+    var objFilterCriteria = [];
 
     // have criteria?
-    if (perm.criteria && perm.criteria.length >= 1) {
-      // yes, append all
-      finalCriteria = finalCriteria.concat(perm.criteria);
-    }
-
-    // If a permission has no criteria then it passes for all cases
-    // (like the admin role)
-    if (finalCriteria.length < 1) {
-      finalCriteria = finalCriteria.concat([{where: {}}]);
-    }
-
-    if (perm.relation === 'owner') {
+    if (
+      true === _.has(perm, 'criteria') &&
+      true === _.isArray(perm.criteria) &&
+      false === _.isEmpty(perm.criteria)
+    ) {
+      // yes, loop all
       perm.criteria.forEach(function (criteria) {
-        criteria.owner = true;
+        // set owner flag?
+        if (perm.relation === 'owner') {
+          // yes
+          criteria.owner = true;
+        }
+        // push onto perm criteria
+        permCriteria.push(criteria);
       });
     }
 
-    return finalCriteria;
+    // have object filters?
+    if (
+      true === _.has(perm, 'objectFilters') &&
+      true === _.isArray(perm.objectFilters) &&
+      false === _.isEmpty(perm.objectFilters)
+    ) {
+      // yes, build where criteria for every id
+      perm.objectFilters.forEach((o) => {
+        objFilterCriteria.push({where: {id: o.objectId}});
+      });
+    }
+
+    // have both?
+    if (permCriteria.length && objFilterCriteria.length) {
+
+      // yes, its an and
+      let finalCriteria = {
+        where: {
+          and: []
+        }
+      };
+
+      // more than one criteria?
+      if (permCriteria.length > 1) {
+        // yes, use sub-or
+        finalCriteria.where.and.push({
+          or: permCriteria.map(o => o.where)
+        });
+      } else {
+        // just one object filter
+        finalCriteria.where.and.push(permCriteria[0].where);
+      }
+
+      // more than one object filter?
+      if (objFilterCriteria.length > 1) {
+        // yes, use sub-or
+        finalCriteria.where.and.push({
+          or: objFilterCriteria.map(o => o.where)
+        });
+      } else {
+        // just one object filter
+        finalCriteria.where.and.push(objFilterCriteria[0].where);
+      }
+
+      // all done
+      return [finalCriteria];
+
+    } else if (permCriteria.length) {
+      // only return perm criteria
+      return permCriteria;
+    } else if (objFilterCriteria.length) {
+      // only return object filters
+      return objFilterCriteria;
+    } else {
+      // If a permission has no criteria then it passes for all cases
+      // (like the admin role)
+      return [{where: {}}];
+    }
   },
 
   /**
