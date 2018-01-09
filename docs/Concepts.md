@@ -82,3 +82,12 @@ Each `Object Filter` is simply a reference to the id of an object stored in the 
 > __Important:__
 >
 > Currently, no foreign key checks are performed on the object ids when inserted.
+
+### Feature
+
+A `Feature` is a tool for building ad hoc policies for protecting non-model related objects or assets.
+Some of examples of this might be composite routes, front-end dashboards, static assets, etc.
+
+A feature can be toggled on/off directly for a `User`, or indirectly for a `User` via a `Role`.
+
+Features do not follow the same CRUD pattern as permissions, they are effectively a boolean flag.

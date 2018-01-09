@@ -57,3 +57,15 @@ All permissions management can be easily achieved using Sails.js v1 REST
 |------|---------|
 |`/objectFilter`| GET, POST |
 |`/objectFilter/{id}`| GET, PATCH, DELETE |
+
+
+### Feature
+
+| Path | Methods |
+|------|---------|
+|`/feature`| GET, POST |
+|`/feature/{id}`| GET, PATCH, DELETE |
+|`/feature/{id}/users` | GET |
+|`/feature/{id}/users/{userId}` | PUT, DELETE |
+|`/feature/{id}/roles` | GET |
+|`/feature/{id}/roles/{roleId}` | PUT, DELETE |

@@ -32,6 +32,10 @@ module.exports = {
     permissions: {
       collection: 'Permission',
       via: 'role'
+    },
+    features: {
+      collection: 'Feature',
+      via: 'roles'
     }
   }
 };

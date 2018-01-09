@@ -11,6 +11,10 @@ _.merge(exports, {
     permissions: {
       collection: "Permission",
       via: "user"
+    },
+    features: {
+      collection: "Feature",
+      via: "users"
     }
   },
 
