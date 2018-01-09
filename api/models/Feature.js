@@ -24,6 +24,12 @@ module.exports = {
       unique: true,
       minLength: 1
     },
+    context: {
+      type: 'string',
+      required: false,
+      minLength: 1,
+      defaultsTo: 'default'
+    },
     active: {
       type: 'boolean',
       defaultsTo: true
