@@ -15,10 +15,6 @@ class Permissions {
     this.sails = sails;
   }
 
-  configure () {
-    if (!_.isObject(sails.config.permissions)) sails.config.permissions = { }
-  }
-
   initialize (next) {
     let config = this.sails.config.permissions
 
@@ -126,8 +122,32 @@ module.exports = function (sails) {
 
   return {
 
+    defaults: {
+      __configKey__: {
+        adminUser: {
+          username: process.env.ADMIN_USERNAME || 'admin',
+          email: process.env.ADMIN_EMAIL || 'admin@example.com',
+          password: process.env.ADMIN_PASSWORD || 'admin1234'
+        },
+        defaultRoles: {
+          admin: true,
+          registered: true,
+          public: true
+        },
+        defaultRole: 'registered',
+        basePermissions: {
+          self: [],
+          global: []
+        }
+      }
+    },
+
     configure: function() {
-      return permissions.configure();
+
+      // get config
+      let config = sails.config[this.configKey];
+
+      if (!_.isObject(sails.config.permissions)) sails.config.permissions = { }
     },
 
     initialize: function(next) {
