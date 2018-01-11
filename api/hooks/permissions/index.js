@@ -143,11 +143,8 @@ module.exports = function (sails) {
     },
 
     configure: function() {
-
       // get config
       let config = sails.config[this.configKey];
-
-      if (!_.isObject(sails.config.permissions)) sails.config.permissions = { }
     },
 
     initialize: function(next) {
