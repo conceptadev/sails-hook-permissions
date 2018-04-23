@@ -18,6 +18,11 @@ module.exports = {
       unique: true,
       minLength: 1
     },
+    description: {
+      type: 'string',
+      minLength: 1,
+      allowNull: true
+    },
     identity: {
       type: 'string',
       required: true,

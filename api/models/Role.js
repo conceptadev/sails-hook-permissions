@@ -21,6 +21,11 @@ module.exports = {
       unique: true,
       minLength: 1
     },
+    description: {
+      type: 'string',
+      minLength: 1,
+      allowNull: true
+    },
     active: {
       type: 'boolean',
       defaultsTo: true
