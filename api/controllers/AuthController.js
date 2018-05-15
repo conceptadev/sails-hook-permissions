@@ -1,6 +1,6 @@
 
 var _ = require('lodash');
-var _super = require('@inspire-platform/sails-hook-auth/api/controllers/AuthController');
+var _super = require('@inspire-platform/sails-hook-auth/dist/api/controllers/AuthController');
 var accessPolicy = require('../../lib/accessPolicy');
 var featurePolicy = require('../../lib/featurePolicy');
 
