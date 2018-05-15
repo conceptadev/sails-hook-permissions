@@ -24,6 +24,7 @@ _.merge(exports, {
       'username',
       'email',
       'lastLogin',
+      'active',
       'roles',
       'permissions',
       'createdAt',
